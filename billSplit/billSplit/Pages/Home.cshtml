@@ -1,6 +1,7 @@
-﻿@page
+﻿@page "/"
 @model IndexModel
 @{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
     ViewData["Title"] = "Home page";
 }
 
@@ -8,3 +9,5 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+<button><a href="Home/Privacy">Privacy()</a></button>
+<button><a asp-action="Hello">Hello()</a></button>
