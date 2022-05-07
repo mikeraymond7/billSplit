@@ -17,7 +17,7 @@ function splitEven() {
 class Item {
     constructor(name, price) {
         this.name = name;
-
+        
         // implement type checking here
         this.price = parseFloat(price);
     }
@@ -25,48 +25,39 @@ class Item {
 
 class person {
     constructor(name) {
-        var body = document.getElementById("mainDiv");
-        var tbl = document.createElement("table");
-        var tr = document.createElement("tr");
-        var th = document.createElement("th");
+        var existing = document.getElementById(name);
+        if (existing == null) {
+            this.tbl = document.createElement("table");
+            this.tr = document.createElement("tr");
+            this.tblName = document.createElement("th");
+            this.tdDelete = document.createElement("td");
 
-        th.innerHTML = name;
-        th.setAttribute('colspan', '2');
-        tbl.setAttribute('id', name);
 
-        tr.appendChild(th);
-        tbl.appendChild(tr);
-        //body.appendChild(tbl);
+            this.tblName.innerHTML = name;
+            this.tblName.setAttribute('colspan', '2');
+
+            this.tdDelete.innerHTML = "<button><b>x</b></button>";
+            this.tdDelete.setAttribute("class", "deleteTbl");
+            this.tdDelete.setAttribute("id", "delete" + name);
+            this.tdDelete.setAttribute("onclick", "person.deleteTbl(" + name + ");");
+
+            this.tbl.setAttribute('id', name);
+
+            this.tr.appendChild(this.tblName);
+            this.tr.appendChild(this.tdDelete);
+            this.tbl.appendChild(this.tr);
+        }
+        else {
+            this.tbl = existing;
+            this.tr = this.tbl.querySelectorAll("tr")[0];
+            this.tblName = this.tbl.querySelectorAll("th")[0];
+            this.tdDelete = document.getElementById("delete" + name);
+        }
     }
 
-    static createPerson(name) {
-        /*const aperson = new person(name);
+    createPerson() {
         var body = document.getElementById("mainDiv");
-        alert(aperson);
-        body.appendChild(person.tbl);
-        */
-        
-        var body = document.getElementById("mainDiv");
-        var tbl = document.createElement("table");
-        var tr = document.createElement("tr");
-        var th = document.createElement("th");
-        var tdDelete = document.createElement("td");
-
-        
-        th.innerHTML = name;
-        tdDelete.innerHTML = "<button><b>x</b></button>";
-
-        th.setAttribute('colspan', '2');
-        tdDelete.setAttribute("class", "deleteTbl");
-        tdDelete.setAttribute("name", name);
-        tdDelete.setAttribute("onclick", "person.deleteTbl(" + name + ");");
-        tbl.setAttribute('id', name);
-
-      
-        tr.appendChild(th);
-        tr.appendChild(tdDelete);
-        tbl.appendChild(tr);
-        body.appendChild(tbl);
+        body.appendChild(this.tbl);
     }
 
     static createItem(person, price) {
@@ -92,25 +83,17 @@ class person {
         this.removeTotals();
         var name = document.getElementById("name").value;
         if (name == "") { name = "Person"; }
-        var person = document.getElementById(name);
-        if (person != null) {
-            var price = document.getElementById("price").value;
-            if (price == "") { alert("You need to enter a price"); }
-            else {
-                this.createItem(person, price);
-            }
-        }
-
+        var newPerson = new person(name);
+        var price = document.getElementById("price").value;
+        if (price == "") { alert("You need to enter a price"); }
         else {
-            this.createPerson(name);
-            this.addInfo();
+            newPerson.createPerson();
+            //this.createItem(, price);
         }
     }
 
     static deleteTbl(name) {
         name.remove();
-        //alert(name.innerHTML);
-        //person.remove();
     }
 
     static removeTotals() {
