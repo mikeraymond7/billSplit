@@ -1,0 +1,21 @@
+﻿@page
+@{
+    ViewData["Title"] = "Split Even";
+    Layout = "_SplitEven";
+}
+
+<br />
+<div class="text-center">
+    <h1 class="display-5">Calculations are based on the following algorithm:</h1>
+    <h2 class = "display-6">(Total Price * (1+Tip%)) / Number of people</h2>
+
+    <div id="centerDiv">
+        <input type="number" id="price" placeholder="Total Price"/>
+        <input type="number" id="people" placeholder="Number of people"/>
+        <input type="number" id="tip" placeholder="Tip% (e.g. 20 = 20%) "/>
+        <br />
+        <button onclick="splitEven()">calculate</button>
+    </div>
+
+    <h3 class="display-6" id="result"></h3>
+</div>

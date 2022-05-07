@@ -1,0 +1,57 @@
+﻿@page
+@{
+    ViewData["Title"] = "Split By Item";
+    Layout = "_SplitByItem";
+}
+<div class="text-center" id="mainDiv">
+    <h1 class="display-5">Calculations are based on the following algorithm:</h1>
+    <h2 class = "display-6">Sum(Items) * (1+Tax%) * (1+Tip%)</h2>
+    <div class="calculations">
+        <input type="number" id="tax" placeholder="Tax% (e.g. 5 = 5%)"/>
+        <input type="number" id="tip" placeholder="Tip% (e.g. 20 = 20%) "/>
+    </div>
+
+    <div class="calculations">
+        <input type="text" id="name" placeholder="Name"/><br />
+        <input type="text" id="item" placeholder="Item Name" />
+        <input type="number" id="price" placeholder="Price ($)" />
+        <br />
+        <button onclick="person.addInfo()">Add Information</button>
+    </div>
+    <div class="calculations">
+        <button onclick="person.calculateTotals()">Calculate Totals</button>
+    </div>
+
+    <table id = "Mike">
+        <tr>
+            <th colspan=2>Mike</th>
+            <!-- <td class="delete"><button>-</button></td> -->
+        </tr>
+        <tr>
+            <th>Item</th>
+            <th>Price</th>
+        </tr>
+        <tr>
+            <td class="item">Cole slaw</td>
+            <td class="price">3.99</td>
+        </tr>
+    </table>
+
+    <table id = "Matt">
+        <tr>
+            <th colspan=2>Matt</th>
+            <!-- <td class="delete"><button>-</button></td> -->
+        </tr>
+        <tr>
+            <th>Item</th>
+            <th>Price</th>
+        </tr>
+        <tr>
+            <td class="item">Chicken Tendies</td>
+            <td class="price">7.99</td>
+       </tr>
+    </table>
+
+
+    <h3 class="display-6" id="result"></h3>
+</div>

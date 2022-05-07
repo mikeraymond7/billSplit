@@ -16,3 +16,46 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+button{
+    margin:2%;
+}
+
+input{
+    margin-top: 10px;
+    text-align: center;
+}
+
+form {
+    margin: auto;
+    margin-top: 20%;
+    text-align: center;
+}
+
+table {
+    margin: auto;
+    margin-top: 5%;
+    width: 75%;
+}
+
+th,td{
+    width: 20%;
+    padding: .7rem;
+    border: solid 0.1rem black;
+}
+
+#centerDiv{
+    margin-top:15%;
+}
+
+.calculations{
+    margin-top: 5%;
+}
+
+.delete{
+    border: 0px;
+}
+
+
+
+
