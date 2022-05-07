@@ -25,22 +25,46 @@ class Item {
 
 class person {
     constructor(name) {
-        this.tbl = document.createElement("table");
-        this.tr = document.createElement("tr");
-        this.th = document.createElement("th");
-    }
-
-    static createPerson(name) {
         var body = document.getElementById("mainDiv");
         var tbl = document.createElement("table");
         var tr = document.createElement("tr");
         var th = document.createElement("th");
-        
+
         th.innerHTML = name;
         th.setAttribute('colspan', '2');
         tbl.setAttribute('id', name);
+
+        tr.appendChild(th);
+        tbl.appendChild(tr);
+        //body.appendChild(tbl);
+    }
+
+    static createPerson(name) {
+        /*const aperson = new person(name);
+        var body = document.getElementById("mainDiv");
+        alert(aperson);
+        body.appendChild(person.tbl);
+        */
+        
+        var body = document.getElementById("mainDiv");
+        var tbl = document.createElement("table");
+        var tr = document.createElement("tr");
+        var th = document.createElement("th");
+        var tdDelete = document.createElement("td");
+
+        
+        th.innerHTML = name;
+        tdDelete.innerHTML = "<button><b>x</b></button>";
+
+        th.setAttribute('colspan', '2');
+        tdDelete.setAttribute("class", "deleteTbl");
+        tdDelete.setAttribute("name", name);
+        tdDelete.setAttribute("onclick", "person.deleteTbl(" + name + ");");
+        tbl.setAttribute('id', name);
+
       
         tr.appendChild(th);
+        tr.appendChild(tdDelete);
         tbl.appendChild(tr);
         body.appendChild(tbl);
     }
@@ -50,12 +74,17 @@ class person {
         var tr = document.createElement("tr");
         var tdItem = document.createElement("td");
         var tdPrice = document.createElement("td");
+        var tdDelete = document.createElement("td");
 
         tdItem.innerHTML = itemName;
         tdPrice.innerHTML = price;
+        tdDelete.innerHTML = "<button><b>-</b></button>";
+        tdDelete.setAttribute("class", "deleteItem");
+        //tdDelete.setAttribute("onclick", "person.deleteItem()");
 
         tr.appendChild(tdItem);
         tr.appendChild(tdPrice);
+        tr.appendChild(tdDelete);
         person.append(tr);
     }
 
@@ -76,6 +105,12 @@ class person {
             this.createPerson(name);
             this.addInfo();
         }
+    }
+
+    static deleteTbl(name) {
+        name.remove();
+        //alert(name.innerHTML);
+        //person.remove();
     }
 
     static removeTotals() {

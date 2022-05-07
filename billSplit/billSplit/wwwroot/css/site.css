@@ -1,5 +1,5 @@
 html {
-  font-size: 14px;
+  font-size: 16px;
 }
 
 @media (min-width: 768px) {
@@ -33,7 +33,7 @@ form {
 }
 
 table {
-    margin: auto;
+    margin-left: 17%;
     margin-top: 5%;
     width: 75%;
 }
@@ -52,8 +52,9 @@ th,td{
     margin-top: 5%;
 }
 
-.delete{
+.deleteTbl, .deleteItem{
     border: 0px;
+    width: 5%;
 }
 
 
