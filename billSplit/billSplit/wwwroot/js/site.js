@@ -172,7 +172,7 @@ class Person {
         total *= (1+tip/100);
 
         var row = document.createElement("tr");
-        var price = document.createElement("td");
+        var price = document.createElement("th");
 
         row.setAttribute('class', 'total');
         price.setAttribute('colspan', '2');
@@ -191,12 +191,13 @@ class Person {
             alert("Don't forget to insert tax and tip");
         }
         else {
+            this.removeTotals();
             var people = document.getElementsByTagName("table");
             var totals = document.getElementsByClassName("total").length;
-            if (totals == people.length) {
+            /*if (totals == people.length) {
                 alert("Something needs to be modified before you can calculate totals!");
                 return;
-            }
+            }*/
             for (var i = 0; i < people.length; i++) {
                 var person = new Person(people[i].getAttribute("id"));
                 person.calculateTotal(tax, tip);
