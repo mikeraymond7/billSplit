@@ -15,37 +15,87 @@ function splitEven() {
 }
 
 class Item {
-    constructor(name, price) {
-        this.name = name;
-        
-        // implement type checking here
-        this.price = parseFloat(price);
+    constructor(tblName, id, price) {
+        this.id = id;
+        var existing = document.getElementById(tblName + id);
+        if (existing == null) {
+
+            this.price = price;
+            var itemName = document.getElementById("item").value;
+            if (itemName == "") { itemName = "N/A"; }
+
+            this.tr = document.createElement("tr");
+            this.tdItem = document.createElement("td");
+            this.tdPrice = document.createElement("td");
+            this.tdDelete = document.createElement("td");
+
+            this.tr.setAttribute("id", tblName + id);
+
+            this.tdItem.innerHTML = itemName;
+            this.tdPrice.innerHTML = price;
+            this.tdDelete.innerHTML = "<button><b>-</b></button>";
+            this.tdDelete.setAttribute("class", "deleteItem");
+            this.tdDelete.setAttribute("onclick", "Person.deleteItem(" + tblName + ", " + tblName + id + ");");
+
+            this.tr.appendChild(this.tdItem);
+            this.tr.appendChild(this.tdPrice);
+            this.tr.appendChild(this.tdDelete);
+        }
+
+        else {
+            this.tr = existing;
+            this.tdItem = this.tr.childNodes[0];
+            this.tdPrice = this.tr.childNodes[1];
+            this.tdDelete = this.tr.childNodes[2];
+            this.price = this.tdPrice.innerHTML;
+        }
+
     }
 }
 
-class person {
+class Person {
     constructor(name) {
+        this.name = name;
         var existing = document.getElementById(name);
+        this.doesExist = existing != null;
         if (existing == null) {
+            // create elements
             this.tbl = document.createElement("table");
             this.tr = document.createElement("tr");
             this.tblName = document.createElement("th");
             this.tdDelete = document.createElement("td");
 
-
+            // set header row
             this.tblName.innerHTML = name;
             this.tblName.setAttribute('colspan', '2');
 
+            // constant title data
+            var itemTitle = document.createElement("th");
+            var priceTitle = document.createElement("th");
+            var rowTitle = document.createElement("tr");
+
+            // constant text
+            itemTitle.innerHTML = "Item";
+            priceTitle.innerHTML = "Price";
+
+            // append to row
+            rowTitle.appendChild(itemTitle);
+            rowTitle.appendChild(priceTitle);
+
+            // set delete button
             this.tdDelete.innerHTML = "<button><b>x</b></button>";
             this.tdDelete.setAttribute("class", "deleteTbl");
             this.tdDelete.setAttribute("id", "delete" + name);
-            this.tdDelete.setAttribute("onclick", "person.deleteTbl(" + name + ");");
+            this.tdDelete.setAttribute("onclick", "Person.deleteTbl(" + name + ");");
 
+            // set unique id
             this.tbl.setAttribute('id', name);
 
+            // attach elements to each other
             this.tr.appendChild(this.tblName);
             this.tr.appendChild(this.tdDelete);
             this.tbl.appendChild(this.tr);
+            this.tbl.appendChild(rowTitle);
         }
         else {
             this.tbl = existing;
@@ -60,41 +110,49 @@ class person {
         body.appendChild(this.tbl);
     }
 
-    static createItem(person, price) {
-        var itemName = document.getElementById("item").value;
-        var tr = document.createElement("tr");
-        var tdItem = document.createElement("td");
-        var tdPrice = document.createElement("td");
-        var tdDelete = document.createElement("td");
+    createItem(price) {
+        var item = new Item(this.name, this.tbl.childElementCount, price);        
 
-        tdItem.innerHTML = itemName;
-        tdPrice.innerHTML = price;
-        tdDelete.innerHTML = "<button><b>-</b></button>";
-        tdDelete.setAttribute("class", "deleteItem");
-        //tdDelete.setAttribute("onclick", "person.deleteItem()");
-
-        tr.appendChild(tdItem);
-        tr.appendChild(tdPrice);
-        tr.appendChild(tdDelete);
-        person.append(tr);
+        this.tbl.appendChild(item.tr);
     }
 
     static addInfo() {
         this.removeTotals();
         var name = document.getElementById("name").value;
-        if (name == "") { name = "Person"; }
-        var newPerson = new person(name);
+        if (name == "") { name = "person"; }
+        var person = new Person(name);
         var price = document.getElementById("price").value;
         if (price == "") { alert("You need to enter a price"); }
         else {
-            newPerson.createPerson();
-            //this.createItem(, price);
+            if (!person.doesExist) {
+                person.createPerson();
+            }
+            person.createItem(price);
         }
     }
 
-    static deleteTbl(name) {
-        name.remove();
+    static deleteTbl(tbl) {
+        tbl.remove();
     }
+
+    static deleteItem(tbl, item) {
+        this.removeTotals();
+        item.remove();
+        if (tbl.childElementCount <= 2) {
+            this.deleteTbl(tbl);
+            return;
+        }
+        var person = new Person(tbl.getAttribute("id"));
+        var skipId = parseInt((item.id).split(tbl.id)[1]);
+
+        for (var i = (skipId + 1); i < tbl.childElementCount+1; i++) {
+            var item = new Item(person.name, i, "");
+            item.id--;
+            item.tr.setAttribute("id", person.name + (i-1));
+            item.tdDelete.setAttribute("onclick", "Person.deleteItem(" + person.name + "," + person.name + (i-1) + ");")
+        }
+    }
+
 
     static removeTotals() {
         var totals = document.getElementsByClassName("total");
@@ -103,11 +161,10 @@ class person {
         }
     }
 
-    static calculateTotal(person, tax, tip) {
-        var items = person.querySelectorAll("td");
-        var prices = [];
+    calculateTotal(tax, tip) {
+        var items = this.tbl.querySelectorAll("td");
         var total = 0;
-        for (var i = 1; i < items.length; i += 2) {
+        for (var i = 2; i < items.length; i += 3) {
             total += parseFloat(items[i].innerHTML);
         }
 
@@ -122,7 +179,7 @@ class person {
 
 
         row.appendChild(price);
-        person.appendChild(row);
+        this.tbl.appendChild(row);
 
         price.innerHTML = "<b>Total Cost: </b>$" + total.toFixed(2);
     }
@@ -137,13 +194,13 @@ class person {
             var people = document.getElementsByTagName("table");
             var totals = document.getElementsByClassName("total").length;
             if (totals == people.length) {
-                alert("Totals are already up-to-date!");
+                alert("Something needs to be modified before you can calculate totals!");
                 return;
             }
             for (var i = 0; i < people.length; i++) {
-                this.calculateTotal(people[i], tax, tip);
+                var person = new Person(people[i].getAttribute("id"));
+                person.calculateTotal(tax, tip);
             }
         }
     }
-
 }
