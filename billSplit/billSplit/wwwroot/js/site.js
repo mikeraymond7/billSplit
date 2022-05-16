@@ -118,7 +118,12 @@ class Person {
 
     static addInfo() {
         this.removeTotals();
-        var name = document.getElementById("name").value;
+        var name1 = document.getElementById("name").value;
+        const names = name1.split(" ");
+        var name = "";
+        for (var i = 0; i < names.length; i++) {
+            name += names[i];
+        }
         if (name == "") { name = "person"; }
         var person = new Person(name);
         var price = document.getElementById("price").value;
