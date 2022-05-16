@@ -34,7 +34,7 @@ form {
 
 table {
     margin-left: 17%;
-    margin-top: 5%;
+    margin-top: 4%;
     width: 75%;
 }
 
@@ -44,12 +44,12 @@ th,td{
     border: solid 0.1rem black;
 }
 
-#centerDiv{
-    margin-top:15%;
+#centerDiv, #mainDiv{
+    margin-top:6%;
 }
 
 .calculations{
-    margin-top: 5%;
+    margin-top: 2%;
 }
 
 .deleteTbl, .deleteItem{
